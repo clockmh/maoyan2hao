@@ -1,0 +1,23 @@
+<html>
+<head>
+</head>
+<body>
+	<img src="hello.jpeg" alt="img">
+	<button onclick="downloadIamge('img','saved.jpeg')"></button>
+	<script>
+	function downloadIamge(selector, name) {
+    // 通过选择器获取img元素
+    var img = document.querySelector(selector)
+    // 将图片的src属性作为URL地址
+    var url = img.src
+    var a = document.createElement('a')
+    var event = new MouseEvent('click')
+    
+    a.download = name || '下载图片名称'
+    a.href = url
+    a.dispatchEvent(event)
+}
+
+	</script>
+</body>
+</html>

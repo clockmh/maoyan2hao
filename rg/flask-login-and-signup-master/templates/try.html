@@ -1,0 +1,204 @@
+<html>
+	<head>
+		<!-- 引入 echarts.js -->
+	    <script src="{{ url_for('static',filename='jquery.min.js')}}"></script>
+	    <!-- 引入jquery.js -->
+	    <script src="{{ url_for('static',filename='echarts.js')}}"></script>
+	</head>
+	<body>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div>
+    <span style="margin-left: 370px">年份:<select id="s1" size=1 style="margin-left: 20px"></span>
+        <option value="1"> 2015</option>
+        <option value="2"> 2016</option>
+		<option value="3"> 2017</option>
+		<option value="4"> 2018</option>
+    </select>
+	<span style="margin-left: 20px">季度:<select id="s2" style="margin-left: 30px"></span>
+        <option value="1"> 一</option>
+        <option value="2"> 二</option>
+		<option value="3"> 三</option>
+		<option value="4"> 四</option>
+		
+    </select>
+    <span style="margin-left: 20px">月份:<select id="s3" style="margin-left: 30px"></span>
+        <option value="1"> 1</option>
+        <option value="2"> 2</option>
+        <option value="3"> 3</option>
+        <option value="4"> 4</option>
+        <option value="5"> 5</option>
+		<option value="6"> 6</option>
+		<option value="7"> 7</option>
+		<option value="8"> 8</option>
+		<option value="9"> 9</option>
+		<option value="10"> 10</option>
+		<option value="11"> 11</option>
+		<option value="12"> 12</option>
+    </select>
+     <button id="btn" name="btn" onclick=" testSelect()">确定</button>
+</div>
+<div id="main" style="width: 900px;height:500px;"></div>
+<script type="text/javascript">
+
+       var selectedText='2015';
+       var selectedText1='1';
+       var selectedText2='1';
+       var value= '1'
+       var value1='1'
+	   var value2='1'
+       function testSelect()    //获取选择的信息
+       {
+        //首先获得下拉框的节点对象；
+        var select = document.getElementById("s1");
+        var select1 = document.getElementById("s2");
+        var select2 = document.getElementById("s3");
+        //1.如何获得当前选中的值？：
+        value = select.value;
+         //window.alert(value)
+        value1 = select1.value;
+        value2 = select2.value;
+        //2.如何获得该下拉框所有的option的节点对象
+        var options = select.options;
+        var options1 = select1.options;
+        var options2 = select2.options;
+        //注意：得到的options是一个对象数组
+
+        //3.如何获得第几个option的value值?比如我要获取第一option的value,可以这样：
+        var value11 = options[0].value;
+        var value12 = options1[0].value;
+        var value13 = options2[0].value;
+        //4.如何获得第几个option的文本内容?比如我要获取第一option的文本,可以这样：
+        var text1 = options[0].text;
+        var text2 = options1[0].text;
+        var text3 = options2[0].text;
+        //5.如何获得当前选中的option的索引？
+        var index = select.selectedIndex;
+        var index1 = select1.selectedIndex;
+        var index2 = select2.selectedIndex;
+        //6.如何获得当前选中的option的文本内容？
+        //从第2个问题，我们已经获得所有的option的对象数组options了
+        //又从第5个问题，我们获取到了当前选中的option的索引值
+        //所以我们只要同options[index]下标的方法得到当前选中的option了
+
+        selectedText = options[index].text;
+        selectedText1 = options1[index1].text;
+        selectedText2 = options2[index2].text;
+        {#window.alert(value)#}
+        $.ajax({
+                url:'http://127.0.0.1:8080/receive_data',
+                type:'POST',
+                data:JSON.stringify({'year': value , 'season': value1,'month':value2}),
+                {##或者data: {jsdata: JSON.stringify({'username': 'js','psw': '132456789'})},#}
+                {##或者data:{'username':'js','psw':'123456789'},#}
+                {##或者data:"username=js&psw=123",#}
+                dataType: 'json',
+                success:function(res){
+                    console.log(res)
+                    console.log(0)
+
+                },
+                error:function (res) {
+                    console.log(res);
+                    console.log(1)
+                }
+            })
+          for (var i=0;i<10000;i++)
+            {
+
+            }
+        var a = echarts;
+        var myChart = a.init(document.getElementById('main'));
+         // 显示标题，图例和空的坐标轴
+         myChart.setOption({
+            title: {
+                text: '爬虫今日抓取数据图'
+            },
+            tooltip : {
+            	trigger: 'item'     //数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+	        },
+	        legend: {
+	            data:['今日数据']         //图例
+	        },
+	        toolbox: {
+	        	// 工具栏,内置有导出图片，数据视图，动态类型切换，数据区域缩放，重置五个工具。
+	            show : true,     //是否展示工具栏，默认true
+	            feature : {        //各工具配置项。
+	                mark : {show: true},//???????????????????????????????????????这是啥
+	                dataView : {show: true, readOnly: false},
+	                //数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新。
+	                magicType : {show: true, type: ['line', 'bar']},
+	                restore : {show: true},   //配置项还原。
+	                saveAsImage : {show: true}  //保存为图片。
+	            }
+	        },
+	        calculable : true,   //是否显示拖拽用的手柄（手柄能拖拽调整选中范围）。
+
+             series : [
+        		{
+		            name: '访问来源',
+		            type: 'pie',
+		            radius: '55%',
+		            // data:[
+		            //     // {value:235, name:'视频广告'},
+		            //     // {value:274, name:'联盟广告'},
+		            //     // {value:310, name:'邮件营销'},
+		            //     // {value:335, name:'直接访问'},
+		            //     // {value:400, name:'搜索引擎'}
+	            	// ]
+        		}
+    		]
+         });
+         myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+         var names=[];    //名称数组（实际用来盛放X轴坐标值）
+         var nums=[];    //数量数组（实际用来盛放Y坐标值）
+
+         $.ajax({
+         	type : "get",
+//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+         	url : " http://127.0.0.1:8080/echars",    //请求发送到Servlet处
+//       data : {},
+         	dataType : "json",        //返回数据形式为json
+         	success : function(result) {
+             //请求成功时执行该函数内容，result即为服务器返回的json对象
+	             if (result) {
+					// window.alert(result["data"]);
+	                    for(var i=0;i<result.length;i++){
+	//                  	alert(result["data"][i]["name"]);
+	                       names.push(result["data"][i]["name"]);    //挨个取出名称并填入类别数组
+	                     }
+	                    for(var i=0;i<result["data"].length;i++){
+	//                  	alert(result["data"][i]["num"]);
+	                        nums.push(result["data"][i]["num"]);    //挨个取出数量并填入销量数组
+	                      }
+	                    var myChart = echarts.init(document.getElementById('main'));
+	                    myChart.hideLoading();    //隐藏加载动画
+	                    myChart.setOption({        //加载数据图表
+	                         // xAxis: {
+	                         //     data: names
+	                         // },
+	                        series : [
+	        					{
+					            name: names,
+	                            data: nums,
+	                        }]
+	                    });
+
+	             }
+
+        },
+	         error : function(errorMsg) {
+	             //请求失败时执行该函数
+	         alert("图表请求数据失败!");
+	         myChart.hideLoading();
+	         }
+    })
+       }
+
+</script>
+{#    	#}
+
+	</body>
+	<script type="text/javascript">
+
+    </script>
+</html>
