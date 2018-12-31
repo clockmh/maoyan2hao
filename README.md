@@ -11,6 +11,7 @@
 >实现了利用邮箱找回密码的功能；  
 >完善了报错机制，提高了系统的稳定性。  
 ### 5.运行系统的方法：  
->第一步：用pycharm运行rg文件夹中的dataoperatenow.py。  
->第二步：用pycharm运行flask-login-and-signup-master文件夹中的app.py。两个文件运行起来后的端口是不同的。  
->第三步：根据app.py生成的url进入系统，开始使用即可。  
+>第一步：先修改flask-login-and-signup-master文件夹中的app.py中的数据库地址，即修改app.config['SQLALCHEMY_DATABASE_URI']后面的地址。  
+>第二步：用pycharm运行rg文件夹中的dataoperatenow.py。  
+>第三步：用pycharm运行flask-login-and-signup-master文件夹中的app.py。两个文件运行起来后的端口是不同的。  
+>第四步：根据app.py生成的url进入系统，开始使用即可。    
